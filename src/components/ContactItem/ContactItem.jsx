@@ -10,7 +10,6 @@ const ContactItem = ({ contact }) => {
   const handleDelete = () => {
     dispatch(deleteContact(contact.id));
   };
-
   return (
     <li className={styles.DataForm}>
       {contact.name}: {contact.number}
