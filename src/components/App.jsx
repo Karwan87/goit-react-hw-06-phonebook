@@ -1,6 +1,6 @@
 import React from 'react';
 import { nanoid } from 'nanoid';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addContact, deleteContact, setFilter } from '../redux/actions';
 import ContactList from './ContactList/ContactList';
 import ContactForm from './ContactForm/ContactForm';
@@ -9,7 +9,6 @@ import styles from './var.module.css';
 
 const App = () => {
   const dispatch = useDispatch();
-  const filter = useSelector(state => state.filter);
 
   const addContactHandler = (name, number) => {
     const newContact = {
