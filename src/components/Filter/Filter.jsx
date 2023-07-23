@@ -16,7 +16,7 @@ const Filter = () => {
       className={styles.inputsForm}
       type="text"
       placeholder="Search contacts"
-      value={filter}
+      value={filter || ''}
       onChange={e => handleFilterChange(e.target.value)}
     />
   );
