@@ -14,8 +14,12 @@ const ContactForm = () => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    if (name.trim() === '' || number.trim() === '') {
-      alert('Cannot add an empty result!');
+    const namePattern = /^[A-Za-z.'\- ]+$/;
+    const numberPattern =
+      /^\+?\d{1,4}?\s?\(?\d{1,4}?\)?\s?\d{1,4}\s?\d{1,4}\s?\d{1,9}$/;
+
+    if (!namePattern.test(name) || !numberPattern.test(number)) {
+      alert('Invalid input! Name and number must match the specified pattern.');
       return;
     }
 
@@ -38,6 +42,8 @@ const ContactForm = () => {
         placeholder="Name"
         value={name}
         onChange={e => setName(e.target.value)}
+        pattern="^[A-Za-z.'\- ]+$"
+        required
       />
       <input
         className={styles.TypeText}
@@ -45,6 +51,8 @@ const ContactForm = () => {
         placeholder="Phone number"
         value={number}
         onChange={e => setNumber(e.target.value)}
+        pattern="^\+?\d{1,4}?\s?\(?\d{1,4}?\)?\s?\d{1,4}\s?\d{1,4}\s?\d{1,9}$"
+        required
       />
       <div className={styles.ButtonContainer}>
         <button className={styles.SubmitButton} type="submit">
