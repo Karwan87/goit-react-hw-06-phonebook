@@ -12,7 +12,7 @@ const contactsReducer = createReducer([], {
 
 const filterReducer = createReducer('', {
   [setFilter]: (state, action) => {
-    return action.payload;
+    return action.payload || '';
   },
 });
 
