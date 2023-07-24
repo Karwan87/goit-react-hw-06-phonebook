@@ -3,20 +3,25 @@ import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './ContactForm.module.css';
 import { nanoid } from 'nanoid';
-import { addContact } from '../../redux/actions';
+import { addContact } from '../../redux/contactsSlice';
 
-const ContactForm = () => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+const ContactForm = ({
+  onAddContact,
+  name: initialName,
+  number: initialNumber,
+}) => {
+  const [name, setName] = useState(initialName || '');
+  const [number, setNumber] = useState(initialNumber || '');
 
   const dispatch = useDispatch();
 
   const handleSubmit = e => {
     e.preventDefault();
-
+    console.log('Submitted!');
+    console.log('Name:', name, 'Number:', number);
     const namePattern = /^[A-Za-z.'\- ]+$/;
-    const numberPattern =
-      /^\+?\d{1,4}?\s?\(?\d{1,4}?\)?\s?\d{1,4}\s?\d{1,4}\s?\d{1,9}$/;
+    const numberPattern = /^[1-9]+$/;
+    // /^\+?\d{1,4}?\s?\(?\d{1,4}?\)?\s?\d{1,4}\s?\d{1,4}\s?\d{1,9}$/;
 
     if (!namePattern.test(name) || !numberPattern.test(number)) {
       alert('Invalid input! Name and number must match the specified pattern.');
@@ -28,11 +33,13 @@ const ContactForm = () => {
       name: name.trim(),
       number: number.trim(),
     };
+    onAddContact(newContact);
 
-    dispatch(addContact(newContact));
     setName('');
     setNumber('');
   };
+
+  // dispatch(addContact(newContact));
 
   return (
     <form className={styles.InputsForm} onSubmit={handleSubmit}>
@@ -42,7 +49,6 @@ const ContactForm = () => {
         placeholder="Name"
         value={name}
         onChange={e => setName(e.target.value)}
-        pattern="^[A-Za-z.'\- ]+$"
         required
       />
       <input
@@ -51,7 +57,6 @@ const ContactForm = () => {
         placeholder="Phone number"
         value={number}
         onChange={e => setNumber(e.target.value)}
-        pattern="^\+?\d{1,4}?\s?\(?\d{1,4}?\)?\s?\d{1,4}\s?\d{1,4}\s?\d{1,9}$"
         required
       />
       <div className={styles.ButtonContainer}>
@@ -65,6 +70,8 @@ const ContactForm = () => {
 
 ContactForm.propTypes = {
   onAddContact: PropTypes.func.isRequired,
+  name: PropTypes.string, // Dodaj deklarację propa 'name'
+  number: PropTypes.string, // Dodaj deklarację propa 'number'
 };
 
 export default ContactForm;
