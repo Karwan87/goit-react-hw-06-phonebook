@@ -1,23 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact, deleteContact, setFilter } from '../redux/actions';
+import { addContact, deleteContact } from '../redux/contactsSlice';
 import ContactList from './ContactList/ContactList';
 import ContactForm from './ContactForm/ContactForm';
+import { setFilter } from '../redux/filterSlice';
 import Filter from './Filter/Filter';
 import styles from './var.module.css';
 
 const App = () => {
   const dispatch = useDispatch();
+  const [contactName, setContactName] = useState('');
+  const [contactNumber, setContactNumber] = useState('');
   const contacts = useSelector(state => state.contacts);
-  const filter = useSelector(state => state.filter || '');
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
+  const filter = useSelector(state => state.filter);
 
   useEffect(() => {
-    localStorage.setItem('filter', filter);
-  }, [filter]);
+    const storedContacts = localStorage.getItem('contacts');
+    if (storedContacts) {
+      dispatch(addContact(JSON.parse(storedContacts)));
+    }
+  }, [dispatch]);
 
   const addContactHandler = (name, number) => {
     const newContact = {
@@ -27,6 +30,8 @@ const App = () => {
     };
 
     dispatch(addContact(newContact));
+    setContactName('');
+    setContactNumber('');
   };
 
   const deleteContactHandler = id => {
@@ -36,10 +41,17 @@ const App = () => {
     dispatch(setFilter(filterValue));
   };
 
+  console.log('Contacts:', contacts);
+  console.log('Filter:', filter);
+
   return (
     <div className={styles.ContactContainer}>
       <h1>Phonebook</h1>
-      <ContactForm onAddContact={addContactHandler} />
+      <ContactForm
+        onAddContact={addContactHandler}
+        name={contactName}
+        number={contactNumber}
+      />
 
       <h2>Contacts</h2>
       <Filter onChangeFilter={changeFilterHandler} />
