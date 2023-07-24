@@ -1,14 +1,17 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './Filter.module.css';
-import { setFilter } from '../../redux/actions';
+import { setFilter } from '../../redux/filterSlice';
 
 const Filter = () => {
+  let filter = useSelector(state => state.filter);
+  if (typeof filter === 'object') {
+    filter = '';
+  }
   const dispatch = useDispatch();
-  const filter = useSelector(state => state.filter);
 
-  const handleFilterChange = value => {
-    dispatch(setFilter(value));
+  const handleFilterChange = event => {
+    dispatch(setFilter(event.target.value));
   };
 
   return (
@@ -17,7 +20,7 @@ const Filter = () => {
       type="text"
       placeholder="Search contacts"
       value={filter || ''}
-      onChange={e => handleFilterChange(e.target.value)}
+      onChange={handleFilterChange}
     />
   );
 };
