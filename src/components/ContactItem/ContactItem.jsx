@@ -1,14 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './ContactItem.module.css';
-import { useDispatch } from 'react-redux';
-import { deleteContact } from '../../redux/actions';
 
-const ContactItem = ({ contact }) => {
-  const dispatch = useDispatch();
-
+const ContactItem = ({ contact, onDeleteContact }) => {
   const handleDelete = () => {
-    dispatch(deleteContact(contact.id));
+    onDeleteContact(contact.id);
   };
   return (
     <li className={styles.DataForm}>
