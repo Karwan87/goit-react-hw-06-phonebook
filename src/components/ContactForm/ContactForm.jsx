@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './ContactForm.module.css';
 import { nanoid } from 'nanoid';
+import { addContact } from 'redux/contactsSlice';
 
-const ContactForm = ({
-  onAddContact,
-  name: initialName,
-  number: initialNumber,
-}) => {
-  const [name, setName] = useState(initialName || '');
-  const [number, setNumber] = useState(initialNumber || '');
+const ContactForm = () => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
+  const dispatch = useDispatch();
   const handleSubmit = e => {
     e.preventDefault();
     console.log('Submitted!');
@@ -29,8 +28,7 @@ const ContactForm = ({
       name: name.trim(),
       number: number.trim(),
     };
-    onAddContact(newContact);
-
+    dispatch(addContact(newContact));
     setName('');
     setNumber('');
   };
@@ -66,8 +64,6 @@ const ContactForm = ({
 
 ContactForm.propTypes = {
   onAddContact: PropTypes.func.isRequired,
-  name: PropTypes.string, // Dodaj deklarację propa 'name'
-  number: PropTypes.string, // Dodaj deklarację propa 'number'
 };
 
 export default ContactForm;
