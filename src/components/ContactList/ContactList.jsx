@@ -5,7 +5,7 @@ import styles from './ContactList.module.css';
 
 const ContactList = ({ onDeleteContact }) => {
   const contacts = useSelector(state => state.contacts);
-  const filter = useSelector(state => state.filter);
+  // const filter = useSelector(state => state.filter);
   console.log(
     'Redux State:',
     useSelector(state => state)
