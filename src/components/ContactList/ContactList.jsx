@@ -12,33 +12,24 @@ const ContactList = ({ onDeleteContact }) => {
   );
   console.log('Filtered Contacts:', contacts);
 
-  if (!Array.isArray(contacts) || contacts.length === 0) {
-    return <div>No contacts found.</div>;
-  }
-
   let filteredContacts = contacts;
 
-  if (filter) {
-    filteredContacts = contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
-    );
+  if (!Array.isArray(contacts) || contacts.length === 0) {
+    return;
   }
 
   console.log('Filtered Contacts:', filteredContacts);
 
-  if (filteredContacts.length === 0) {
-    return <div>No contacts found.</div>;
-  }
-
   return (
     <ul className={styles.ManageResults}>
-      {filteredContacts.map(contact => (
-        <ContactItem
-          key={contact.id}
-          contact={contact}
-          onDeleteContact={onDeleteContact}
-        />
-      ))}
+      {Array.isArray(filteredContacts) &&
+        filteredContacts.map(contact => (
+          <ContactItem
+            key={contact.id}
+            contact={contact}
+            onDeleteContact={onDeleteContact}
+          />
+        ))}
     </ul>
   );
 };
