@@ -10,18 +10,20 @@ const ContactForm = () => {
   const [number, setNumber] = useState('');
 
   const dispatch = useDispatch();
-  const handleSubmit = e => {
-    e.preventDefault();
+  const handleSubmit = event => {
+    event.preventDefault();
     console.log('Submitted!');
     console.log('Name:', name, 'Number:', number);
-    const namePattern = /^[A-Za-z.'\- ]+$/;
-    const numberPattern = /^[1-9]+$/;
+    // const name = event.target.name.value;
+    // const number = event.target.number.value;
+    // const namePattern = /^[A-Za-z.'\- ]+$/;
+    // const numberPattern = /^[1-9]+$/;
     // /^\+?\d{1,4}?\s?\(?\d{1,4}?\)?\s?\d{1,4}\s?\d{1,4}\s?\d{1,9}$/;
 
-    if (!namePattern.test(name) || !numberPattern.test(number)) {
-      alert('Invalid input! Name and number must match the specified pattern.');
-      return;
-    }
+    // if (!namePattern.test(name) || !numberPattern.test(number)) {
+    //   alert('Invalid input! Name and number must match the specified pattern.');
+    //   return;
+    // }
 
     const newContact = {
       id: nanoid(),
