@@ -4,32 +4,41 @@ import ContactItem from '../ContactItem/ContactItem';
 import styles from './ContactList.module.css';
 
 const ContactList = ({ onDeleteContact }) => {
-  const contacts = useSelector(state => state.contacts);
-  // const filter = useSelector(state => state.filter);
+  const contactsArray = useSelector(state => state.contactsArray);
+  const filter = useSelector(state => state.filter);
   console.log(
     'Redux State:',
     useSelector(state => state)
   );
-  console.log('Filtered Contacts:', contacts);
+  console.log('Filtered Contacts:', contactsArray);
 
-  let filteredContacts = contacts;
+  let filteredContacts = contactsArray;
 
-  if (!Array.isArray(contacts) || contacts.length === 0) {
-    return;
+  if (!Array.isArray(contactsArray) || contactsArray.length === 0) {
+    return <div>No contacts found.</div>;
+  }
+
+  if (filter) {
+    filteredContacts = contactsArray.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
   }
 
   console.log('Filtered Contacts:', filteredContacts);
 
+  if (filteredContacts.length === 0) {
+    return <div>No contacts found.</div>;
+  }
+
   return (
     <ul className={styles.ManageResults}>
-      {Array.isArray(filteredContacts) &&
-        filteredContacts.map(contact => (
-          <ContactItem
-            key={contact.id}
-            contact={contact}
-            onDeleteContact={onDeleteContact}
-          />
-        ))}
+      {filteredContacts.map(contact => (
+        <ContactItem
+          key={contact.id}
+          contact={contact}
+          onDeleteContact={onDeleteContact}
+        />
+      ))}
     </ul>
   );
 };
