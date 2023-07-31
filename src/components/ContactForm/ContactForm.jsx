@@ -49,7 +49,7 @@ const ContactForm = () => {
       />
       <div className={styles.ButtonContainer}>
         <button className={styles.SubmitButton} type="submit">
-          ADD contacts
+          Add contacts
         </button>
       </div>
     </form>
