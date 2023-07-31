@@ -4,23 +4,38 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   addContact,
   deleteContact,
-  setContactsArray,
-} from 'redux/contactsSlice';
+  setFilter,
+  setContacts,
+  loadContacts,
+} from '../redux/actions';
 import ContactList from './ContactList/ContactList';
 import ContactForm from './ContactForm/ContactForm';
-import { setFilter } from '../redux/filterSlice';
 import Filter from './Filter/Filter';
 import styles from './var.module.css';
 
 const App = () => {
   const dispatch = useDispatch();
-  const contactsArray = useSelector(state => state.contactsArray);
-  const filter = useSelector(state => state.filter);
+  const contacts = useSelector(state => state.contacts);
 
   useEffect(() => {
-    const storedContacts = localStorage.getItem('contacts');
-    if (storedContacts) {
-      dispatch(setContactsArray(JSON.parse(storedContacts)));
+    dispatch(loadContacts());
+  }, [dispatch]);
+
+  const saveContactsToLocalStorage = () => {
+    const contactsToSave = JSON.stringify(contacts);
+    localStorage.setItem('contacts', contactsToSave);
+  };
+
+  useEffect(() => {
+    saveContactsToLocalStorage();
+  }, [contacts]);
+
+  useEffect(() => {
+    const contactsFromLocalStorage = JSON.parse(
+      localStorage.getItem('contacts')
+    );
+    if (contactsFromLocalStorage) {
+      dispatch(setContacts(contactsFromLocalStorage));
     }
   }, [dispatch]);
 
@@ -30,17 +45,11 @@ const App = () => {
       name: name.trim(),
       number: number.trim(),
     };
-
     dispatch(addContact(newContact));
   };
-
   const deleteContactHandler = id => {
     dispatch(deleteContact(id));
-    dispatch(
-      setContactsArray(contactsArray.filter(contact => contact.id !== id))
-    );
   };
-
   const changeFilterHandler = filterValue => {
     dispatch(setFilter(filterValue));
   };
@@ -49,16 +58,10 @@ const App = () => {
     <div className={styles.ContactContainer}>
       <h1>Phonebook</h1>
       <ContactForm onAddContact={addContactHandler} />
-
       <h2>Contacts</h2>
       <Filter onChangeFilter={changeFilterHandler} />
-      <ContactList
-        contacts={contactsArray}
-        filter={filter}
-        onDeleteContact={deleteContactHandler}
-      />
+      <ContactList onDeleteContact={deleteContactHandler} />
     </div>
   );
 };
-
 export default App;
