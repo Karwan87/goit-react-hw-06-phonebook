@@ -28,7 +28,7 @@ const App = () => {
 
   useEffect(() => {
     saveContactsToLocalStorage();
-  }, [contacts]);
+  }, [contacts, saveContactsToLocalStorage]);
 
   useEffect(() => {
     const contactsFromLocalStorage = JSON.parse(
