@@ -1,14 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './ContactItem.module.css';
+import { useDispatch } from 'react-redux';
+import { deleteContact } from '../../redux/actions';
 
-const ContactItem = ({ contact, onDeleteContact }) => {
+const ContactItem = ({ contact }) => {
+  const dispatch = useDispatch();
+
   const handleDelete = () => {
-    onDeleteContact(contact.id);
+    dispatch(deleteContact(contact.id));
   };
+
   return (
     <li className={styles.DataForm}>
-      {contact.name}: {contact.number}
+      {contact.name}: {contact.number}{' '}
       <button
         className={styles.DeleteButton}
         type="button"
@@ -19,7 +24,6 @@ const ContactItem = ({ contact, onDeleteContact }) => {
     </li>
   );
 };
-
 ContactItem.propTypes = {
   contact: PropTypes.shape({
     id: PropTypes.string.isRequired,
@@ -27,5 +31,4 @@ ContactItem.propTypes = {
     number: PropTypes.string.isRequired,
   }).isRequired,
 };
-
 export default ContactItem;
