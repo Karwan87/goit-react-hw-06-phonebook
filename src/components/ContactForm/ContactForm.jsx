@@ -3,40 +3,32 @@ import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './ContactForm.module.css';
 import { nanoid } from 'nanoid';
-import { addContact } from 'redux/contactsSlice';
+import { addContact } from '../../redux/actions';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
   const dispatch = useDispatch();
-  const handleSubmit = event => {
-    event.preventDefault();
-    console.log('Submitted!');
-    console.log('Name:', name, 'Number:', number);
-    // const name = event.target.name.value;
-    // const number = event.target.number.value;
-    // const namePattern = /^[A-Za-z.'\- ]+$/;
-    // const numberPattern = /^[1-9]+$/;
-    // /^\+?\d{1,4}?\s?\(?\d{1,4}?\)?\s?\d{1,4}\s?\d{1,4}\s?\d{1,9}$/;
 
-    // if (!namePattern.test(name) || !numberPattern.test(number)) {
-    //   alert('Invalid input! Name and number must match the specified pattern.');
-    //   return;
-    // }
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    if (name.trim() === '' || number.trim() === '') {
+      alert('Cannot add an empty result!');
+      return;
+    }
 
     const newContact = {
       id: nanoid(),
       name: name.trim(),
       number: number.trim(),
     };
+
     dispatch(addContact(newContact));
     setName('');
     setNumber('');
   };
-
-  // dispatch(addContact(newContact));
-
   return (
     <form className={styles.InputsForm} onSubmit={handleSubmit}>
       <input
@@ -44,16 +36,16 @@ const ContactForm = () => {
         type="text"
         placeholder="Name"
         value={name}
+        pattern="^[A-Za-z.'\- ]+$"
         onChange={e => setName(e.target.value)}
-        required
       />
       <input
         className={styles.TypeText}
         type="tel"
         placeholder="Phone number"
         value={number}
+        pattern="^\+?\d{1,4}?\s?\(?\d{1,4}?\)?\s?\d{1,4}\s?\d{1,4}\s?\d{1,9}$"
         onChange={e => setNumber(e.target.value)}
-        required
       />
       <div className={styles.ButtonContainer}>
         <button className={styles.SubmitButton} type="submit">
