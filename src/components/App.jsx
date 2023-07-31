@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -21,10 +21,14 @@ const App = () => {
     dispatch(loadContacts());
   }, [dispatch]);
 
-  const saveContactsToLocalStorage = () => {
+  const saveContactsToLocalStorage = useCallback(() => {
     const contactsToSave = JSON.stringify(contacts);
     localStorage.setItem('contacts', contactsToSave);
-  };
+  }, [contacts]);
+
+  useEffect(() => {
+    dispatch(loadContacts());
+  }, [dispatch]);
 
   useEffect(() => {
     saveContactsToLocalStorage();
